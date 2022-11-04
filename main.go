@@ -56,7 +56,9 @@ func main() {
 
 // usage shows the usage of this program.
 func usage() {
-	log.Println(`Usage: ohlcresampler frame N
-frame - timeframe in string format like: 1m, 5m, 15m, 1h
-N - number of candles`)
+	log.Println(`Usage: ohlcresampler frame n
+timeframe - time frame in string format like: 1m, 5m, 15m, 1h
+n - number of candles
+
+These two parameters are mandatory.`)
 }
