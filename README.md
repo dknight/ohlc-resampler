@@ -70,6 +70,9 @@ curl -s --output "-" https://data.binance.vision/data/spot/daily/trades/DOGEUSDT
 ```
 curl -s --output "-" https://data.binance.vision/data/spot/daily/trades/DOGEUSDT/DOGEUSDT-trades-2022-10-22.zip | tar -x -O | ohlc-resampler 5m 10 > out.csv
 ```
+#### Windows
+
+```I don't know how to do it on Windows.```
 
 ## Testing
 
