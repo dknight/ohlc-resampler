@@ -12,12 +12,14 @@ func TestTimeframe_SortedKeys(t *testing.T) {
 	tf := GroupByTimeframes(records, dur)
 	keys := tf.SortedKeys()
 	expected := []time.Duration{
-		1661040003000 * time.Millisecond,
-		1661040004000 * time.Millisecond,
-		1661040005000 * time.Millisecond,
-		1661040006000 * time.Millisecond,
-		1661040007000 * time.Millisecond,
-		1661040008000 * time.Millisecond,
+		1667260803000 * time.Millisecond,
+		1667260804000 * time.Millisecond,
+		1667260806000 * time.Millisecond,
+		1667260808000 * time.Millisecond,
+		1667260813000 * time.Millisecond,
+		1667260815000 * time.Millisecond,
+		1667260816000 * time.Millisecond,
+		1667260817000 * time.Millisecond,
 	}
 	if !reflect.DeepEqual(keys, expected) {
 		t.Error("Expected", expected, "got", keys)

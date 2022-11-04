@@ -1,4 +1,5 @@
-Make benchmark.
+Fill gaps in intervals with no trades see GroupByTimeframes() function.
+Make benchmarks.
 Make better performance.
 Do better tests and test even better.
-Refactor function ResampleFromTimeframes make it more performing.
+Refactor function ResampleFromTimeframes.

@@ -1,8 +1,10 @@
 # ohlc-resampler
 
-ohlc-resampler is a simple utility to transform aggregated trade data 
+ohlc-resampler is a simple utility to transform trade data
 from Binance Cryptocurrency market data into OHLCV candles to simulate
 market behavior and test trading algorithms.
+
+Binance data archives can be found [here](https://data.binance.vision/?prefix=data/).
 
 ## Word of warning!
 
@@ -36,15 +38,15 @@ ohlc-resampler timeframe N < input.csv
 * N - number of candles, cannot be less than zero, otherwise
 fallback 20 will be used.
 
-### Standard example
+### Output to stdout
 
 ```sh
-ohlc-resampler 5m 20 < files/DOGEUSDT-aggTrades-2022-10-26.csv
+ohlc-resampler 5m 20 < DOGEUSDT-trades-2022-10-26.csv
 ```
 
 ### Redirect output to file
 ```sh
-ohlc-resampler 5m 20 < files/DOGEUSDT-aggTrades-2022-10-26.csv > output.csv
+ohlc-resampler 5m 20 < DOGEUSDT-trades-2022-10-26.csv > output.csv
 ```
 
 ### cURL example
@@ -55,13 +57,13 @@ combinations like dowloading data from the web.
 #### GNU/Linux
 
 ```
-curl -s --output "-" https://data.binance.vision/data/futures/um/daily/aggTrades/DOGEUSDT/DOGEUSDT-aggTrades-2022-10-23.zip | gunzip | ohlc-resampler 5m 10 > out.txt
+curl -s --output "-" https://data.binance.vision/data/spot/daily/trades/DOGEUSDT/DOGEUSDT-trades-2022-10-22.zip | gunzip | ohlc-resampler 5m 10 > out.txt
 ```
 
 #### MacOS
 
 ```
-curl -s --output "-" https://data.binance.vision/data/futures/um/daily/aggTrades/DOGEUSDT/DOGEUSDT-aggTrades-2022-10-23.zip | tar -x -O | ohlc-resampler 5m 10 > out.txt
+curl -s --output "-" https://data.binance.vision/data/spot/daily/trades/DOGEUSDT/DOGEUSDT-trades-2022-10-22.zip | tar -x -O | ohlc-resampler 5m 10 > out.txt
 ```
 
 ## Testing

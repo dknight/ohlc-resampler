@@ -2,10 +2,10 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha1"
 	"io/ioutil"
 	"log"
 	"os"
-	"reflect"
 	"testing"
 	"time"
 )
@@ -39,20 +39,23 @@ func TestResampleFromTimeframes(t *testing.T) {
 	defer os.Remove(fp.Name())
 
 	dur, _ := time.ParseDuration("1s")
+	candles := 3
 	records, _ := readrecs()
 	tf := GroupByTimeframes(records, dur)
-	samples := ResampleFromTimeframes(tf, len(records), 3)
+	samples := ResampleFromTimeframes(tf, len(records), candles)
 	WriteHistory(samples, fp)
 
 	bs, err := ioutil.ReadFile(fp.Name())
 	if err != nil {
 		log.Fatalln(err)
 	}
+	bsSum := sha1.Sum(bs)
 	expected, err := ioutil.ReadFile("./files/ref.csv")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	if !reflect.DeepEqual(expected, bs) {
+	expectedSum := sha1.Sum(expected)
+	if expectedSum != bsSum {
 		t.Error("Expected", expected, "got", bs)
 	}
 }

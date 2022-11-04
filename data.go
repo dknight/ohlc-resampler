@@ -6,7 +6,6 @@ import (
 	"log"
 	"math"
 	"os"
-	"sort"
 	"strings"
 	"time"
 )
@@ -29,26 +28,17 @@ func ReadRecords(rd io.Reader) []Record {
 		rec := Record{}
 		records = append(records, rec.BuildFromString(record))
 	}
-
-	// Sort in case if input is messy, but affects performance.
-	sort.Slice(records, func(i, j int) bool {
-		return records[i].TransactionTime < records[j].TransactionTime
-	})
-
 	return records
 }
 
 // GroupByTimeframes groups records by timeframes.
+// TODO: do we need to fill gaps?
 func GroupByTimeframes(recs []Record, dt time.Duration) Timeframe {
 	frames := Timeframe{}
 	for i := 0; i < len(recs); i++ {
-		t := recs[i].TransactionTime - recs[i].TransactionTime%dt
-		if recs[i].TransactionTime >= t && recs[i].TransactionTime < t+dt {
+		t := recs[i].Time - recs[i].Time%dt
+		if recs[i].Time >= t && recs[i].Time < t+dt {
 			frames[t] = append(frames[t], recs[i])
-		} else {
-			i--
-			t += dt
-			continue
 		}
 	}
 	return frames
@@ -56,11 +46,10 @@ func GroupByTimeframes(recs []Record, dt time.Duration) Timeframe {
 
 // ResampleFromTimeframes resamples the timeframes to emulate the real
 // market behavior.
-// TODO: this can be done better
+// TODO: this can be done better. Performace? Complex logic.
 func ResampleFromTimeframes(tf Timeframe, n, ncandles int) [][]Candle {
 	retval := make([][]Candle, 0, n)
 	final := make([]Candle, 0, ncandles)
-	// count := 1
 
 	keys := tf.SortedKeys()
 	for _, key := range keys {
@@ -78,19 +67,19 @@ func ResampleFromTimeframes(tf Timeframe, n, ncandles int) [][]Candle {
 						Close:  rec.Price,
 						Low:    rec.Price,
 						High:   rec.Price,
-						Volume: rec.Volume,
+						Volume: rec.Qty,
 						Time:   key,
 					}
 					candles = append(candles, candle)
 				}
 				retval = append(retval, candles)
 				final = candles[:]
-				volume += rec.Volume
+				volume += rec.Qty
 				continue
 			}
 			high = math.Max(rec.Price, high)
 			low = math.Min(rec.Price, low)
-			volume += rec.Volume
+			volume += rec.Qty
 			candle := Candle{
 				Open:   tf[key][0].Price,
 				Close:  rec.Price,
@@ -101,10 +90,6 @@ func ResampleFromTimeframes(tf Timeframe, n, ncandles int) [][]Candle {
 			}
 			candles = append(final[1:], candle)
 			retval = append(retval, candles)
-
-			// TODO: this is bad to leave it here, use channel.
-			// count++
-			// fmt.Printf("\r%v of %v", count, n)
 		}
 		final = retval[len(retval)-1][:]
 	}

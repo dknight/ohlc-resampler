@@ -1,9 +1,13 @@
-// ohlc-resampler is a simple utility to transform aggregated trade data
+// ohlc-resampler is a simple utility to transform trade data
 // from Binance Cryptocurrency market data into OHLCV candles to simulate
 // market behavior and test trading algorithms.
 //
+// Binance data archives can be found here:
+// https://data.binance.vision/?prefix=data/
+//
 // Dmitri Smirnov 2022 <https://www.whoop.ee>
 // License MIT
+//
 package main
 
 import (
