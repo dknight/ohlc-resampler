@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"io/ioutil"
-	"log"
 	"os"
 	"testing"
 	"time"
@@ -34,7 +33,7 @@ func TestReadRecords(t *testing.T) {
 func TestResampleFromTimeframes(t *testing.T) {
 	fp, err := os.CreateTemp("", "ohlcsamples.*")
 	if err != nil {
-		log.Fatal(err)
+		t.Error(err)
 	}
 	defer os.Remove(fp.Name())
 
@@ -47,12 +46,12 @@ func TestResampleFromTimeframes(t *testing.T) {
 
 	bs, err := ioutil.ReadFile(fp.Name())
 	if err != nil {
-		log.Fatalln(err)
+		t.Error(err)
 	}
 	bsSum := sha1.Sum(bs)
 	expected, err := ioutil.ReadFile("./files/ref.csv")
 	if err != nil {
-		log.Fatalln(err)
+		t.Error(err)
 	}
 	expectedSum := sha1.Sum(expected)
 	if expectedSum != bsSum {
