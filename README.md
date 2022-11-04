@@ -47,6 +47,23 @@ ohlc-resampler 5m 20 < files/DOGEUSDT-aggTrades-2022-10-26.csv
 ohlc-resampler 5m 20 < files/DOGEUSDT-aggTrades-2022-10-26.csv > output.csv
 ```
 
+### cURL example
+
+You can combile cURL and other command line utilities to make interesing
+combinations like dowloading data from the web.
+
+#### GNU/Linux
+
+```
+curl -s --output "-" https://data.binance.vision/data/futures/um/daily/aggTrades/DOGEUSDT/DOGEUSDT-aggTrades-2022-10-23.zip | gunzip | ohlc-resampler 5m 10 > out.txt
+```
+
+#### MacOS
+
+```
+curl -s --output "-" https://data.binance.vision/data/futures/um/daily/aggTrades/DOGEUSDT/DOGEUSDT-aggTrades-2022-10-23.zip | tar -x -O | ohlc-resampler 5m 10 > out.txt
+```
+
 ## Testing
 
 ```sh
